@@ -60,6 +60,9 @@ namespace Optimizer.Optimizer
                 currentPlayerDeck.PlayedCards.ForEach(c => c.Delay -= 1);
                 currentEnemyDeck.PlayedCards.ForEach(c => c.Delay -= 1);
             }
+            
+            // If no player win in 50 turns, its draw 
+            intermediateResult.NumberOfPlayerDraws += 1;
 
             return intermediateResult;
         }

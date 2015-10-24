@@ -18,7 +18,9 @@ namespace Optimizer.Utils
 
         public static string DumpLog()
         {
-            return Logs.ToString();
+            var dumpedLog = Logs.ToString();
+            Logs.Clear();
+            return dumpedLog;
         }
 
         public static void Log(string text, params object[] args)

@@ -28,61 +28,84 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.RichTextBox();
+            this.btnOptimize = new System.Windows.Forms.Button();
+            this.rtbOutputDetails = new System.Windows.Forms.RichTextBox();
             this.txtIterations = new System.Windows.Forms.TextBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.rtbSimulationResult = new System.Windows.Forms.RichTextBox();
+            this.cbxSurgeMode = new System.Windows.Forms.CheckBox();
+            this.lblIterations = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // button1
+            // btnOptimize
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(612, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Optimize!";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnOptimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOptimize.Location = new System.Drawing.Point(612, 12);
+            this.btnOptimize.Name = "btnOptimize";
+            this.btnOptimize.Size = new System.Drawing.Size(75, 23);
+            this.btnOptimize.TabIndex = 0;
+            this.btnOptimize.Text = "Optimize!";
+            this.btnOptimize.UseVisualStyleBackColor = true;
+            this.btnOptimize.Click += new System.EventHandler(this.button1_Click);
             // 
-            // textBox1
+            // rtbOutputDetails
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.rtbOutputDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(12, 41);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(675, 134);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "";
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.rtbOutputDetails.Location = new System.Drawing.Point(12, 41);
+            this.rtbOutputDetails.Name = "rtbOutputDetails";
+            this.rtbOutputDetails.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.rtbOutputDetails.Size = new System.Drawing.Size(675, 134);
+            this.rtbOutputDetails.TabIndex = 1;
+            this.rtbOutputDetails.Text = "";
+            this.rtbOutputDetails.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // txtIterations
             // 
-            this.txtIterations.Location = new System.Drawing.Point(13, 13);
+            this.txtIterations.Location = new System.Drawing.Point(72, 12);
             this.txtIterations.Name = "txtIterations";
-            this.txtIterations.Size = new System.Drawing.Size(178, 20);
+            this.txtIterations.Size = new System.Drawing.Size(74, 20);
             this.txtIterations.TabIndex = 2;
             this.txtIterations.Text = "1";
             // 
-            // richTextBox1
+            // rtbSimulationResult
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(13, 181);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(674, 64);
-            this.richTextBox1.TabIndex = 3;
-            this.richTextBox1.Text = "";
+            this.rtbSimulationResult.Location = new System.Drawing.Point(13, 181);
+            this.rtbSimulationResult.Name = "rtbSimulationResult";
+            this.rtbSimulationResult.Size = new System.Drawing.Size(674, 64);
+            this.rtbSimulationResult.TabIndex = 3;
+            this.rtbSimulationResult.Text = "";
+            // 
+            // cbxSurgeMode
+            // 
+            this.cbxSurgeMode.AutoSize = true;
+            this.cbxSurgeMode.Location = new System.Drawing.Point(162, 11);
+            this.cbxSurgeMode.Name = "cbxSurgeMode";
+            this.cbxSurgeMode.Size = new System.Drawing.Size(83, 17);
+            this.cbxSurgeMode.TabIndex = 4;
+            this.cbxSurgeMode.Text = "Surge mode";
+            this.cbxSurgeMode.UseVisualStyleBackColor = true;
+            // 
+            // lblIterations
+            // 
+            this.lblIterations.AutoSize = true;
+            this.lblIterations.Location = new System.Drawing.Point(13, 12);
+            this.lblIterations.Name = "lblIterations";
+            this.lblIterations.Size = new System.Drawing.Size(53, 13);
+            this.lblIterations.TabIndex = 5;
+            this.lblIterations.Text = "Iterations:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(699, 257);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.lblIterations);
+            this.Controls.Add(this.cbxSurgeMode);
+            this.Controls.Add(this.rtbSimulationResult);
             this.Controls.Add(this.txtIterations);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.rtbOutputDetails);
+            this.Controls.Add(this.btnOptimize);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -92,10 +115,12 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.RichTextBox textBox1;
+        private System.Windows.Forms.Button btnOptimize;
+        private System.Windows.Forms.RichTextBox rtbOutputDetails;
         private System.Windows.Forms.TextBox txtIterations;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox rtbSimulationResult;
+        private System.Windows.Forms.CheckBox cbxSurgeMode;
+        private System.Windows.Forms.Label lblIterations;
     }
 }
 

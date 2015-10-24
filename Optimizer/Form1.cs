@@ -26,7 +26,7 @@ namespace Optimizer
             var iterations = 0;
             if (!Int32.TryParse(iterationsText, out iterations))
             {
-                textBox1.Text = "Invalid Iterations";
+                rtbOutputDetails.Text = "Invalid Iterations";
                 return;
             }
 
@@ -48,18 +48,18 @@ namespace Optimizer
             
 
             BasicOptimizer optimizer = new BasicOptimizer();
-            var result = optimizer.RunOptimization(playerDeck, enemyDeck, false, iterations);
+            var result = optimizer.RunOptimization(playerDeck, enemyDeck, cbxSurgeMode.Checked, iterations);
 
-            textBox1.Text =  Logger.DumpLog();
+            rtbOutputDetails.Text =  Logger.DumpLog();
             
             StringBuilder resultBuilder = new StringBuilder();
-            resultBuilder.AppendFormat("WinRatio: {0}", result.WinRatio);
+            resultBuilder.AppendFormat("Win/Loss/Draw: {0}/{1}/{2}", result.NumberOfPlayerWins,
+                result.NumberOfPlayerLosses, result.NumberOfPlayerDraws);
             resultBuilder.AppendLine();
-            resultBuilder.AppendFormat("LossRatio: {0}", result.LossRatio);
-            resultBuilder.AppendLine();
-            resultBuilder.AppendFormat("DrawRatio: {0}", result.DrawRatio);
+            resultBuilder.AppendFormat("Ratio Win/Loss/Draw: {0}/{1}/{2}", result.WinRatio,
+                result.LossRatio, result.DrawRatio);
 
-            richTextBox1.Text = resultBuilder.ToString();
+            rtbSimulationResult.Text = resultBuilder.ToString();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
