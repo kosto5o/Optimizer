@@ -1,21 +1,16 @@
 ﻿using Optimizer.Optimizer;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Optimizer.Domain;
 using Optimizer.Utils;
 
 namespace Optimizer
 {
-    public partial class Form1 : Form
+    public partial class OptimizerForm : Form
     {
-        public Form1()
+        public OptimizerForm()
         {
             InitializeComponent();
         }
@@ -33,6 +28,7 @@ namespace Optimizer
             var playerCards = new Stack<Card>();
             playerCards.Push(new Card(2, 14, 1) { Name = "Zodiac" });
             playerCards.Push(new Card(3, 18, 1) { Name = "Zodiac Double" });
+            playerCards.Push(new Card(0, 15, 2) { Name = "Some tower", CardType = CardType.Tower });
 
             Deck playerDeck = new Deck(true, playerCards);
             playerDeck.Commander = new Commander(0, 20, 0);
@@ -42,6 +38,15 @@ namespace Optimizer
             var enemyCards = new Stack<Card>();
             enemyCards.Push(new Card(4, 20, 2) { Name = "Aegis" });
             enemyCards.Push(new Card(1, 17, 1) { Name = "Wham" });
+            var towerAttackCard = new Card(1, 17, 1) {Name = "Wham Tower Attacker"};
+            towerAttackCard.Skills.Add(new Skill()
+                {
+                    Power = 2,
+                    Repeat = 0,
+                    SkillArea = SkillArea.Single,
+                    SkillType = SkillType.Siege
+                });
+            enemyCards.Push(towerAttackCard);
 
             Deck enemyDeck = new Deck(false, enemyCards);
             enemyDeck.Commander = new Commander(0, 20, 0);

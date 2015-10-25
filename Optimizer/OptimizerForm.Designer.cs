@@ -1,6 +1,6 @@
 ﻿namespace Optimizer
 {
-    partial class Form1
+    partial class OptimizerForm
     {
         /// <summary>
         /// Required designer variable.
