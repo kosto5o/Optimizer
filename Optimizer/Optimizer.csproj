@@ -55,7 +55,11 @@
     <Compile Include="Domain\Rarity.cs" />
     <Compile Include="Domain\Faction.cs" />
     <Compile Include="Domain\SimulationResult.cs" />
-    <Compile Include="Domain\Skill.cs" />
+    <Compile Include="Domain\Skills\AttackSkill.cs" />
+    <Compile Include="Domain\Skills\Skill.cs" />
+    <Compile Include="Domain\Skills\SkillArea.cs" />
+    <Compile Include="Domain\Skills\SkillType.cs" />
+    <Compile Include="Domain\Skills\SupportSkill.cs" />
     <Compile Include="OptimizerForm.cs">
       <SubType>Form</SubType>
     </Compile>

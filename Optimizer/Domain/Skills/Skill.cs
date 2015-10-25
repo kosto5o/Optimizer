@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Optimizer.Domain
+﻿namespace Optimizer.Domain.Skills
 {
-    public class Skill
+    public abstract class Skill
     {
 
         public SkillType SkillType { get; set; }
@@ -33,23 +27,13 @@ namespace Optimizer.Domain
         {
             this.RepeatCounter++;
         }
-    }
 
-    public enum SkillArea
-    {
-        Single,
-        Multiple,
-        All,
-        AllImperial,
-        AllXeno,
-        AllRaider,
-        AllRighteous,
-        AllBloodthirsty
-    }
+        public CardType GetTargetCardType()
+        {
+            return this.SkillType == SkillType.Siege ? CardType.Tower : CardType.Assault;
+        }
 
-    public enum SkillType
-    {
-        NoSkill,
-        Siege
+        
+        public abstract void Attack(Deck currentPlayerDeck, Deck currentEnemyDeck, Card skillOwnerCard);        
     }
 }

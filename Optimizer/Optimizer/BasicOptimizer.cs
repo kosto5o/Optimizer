@@ -40,16 +40,7 @@ namespace Optimizer.Optimizer
                 var winningDeck = PlayerTurn(currentPlayerDeck, currentEnemyDeck);
                 if (winningDeck != null)
                 {
-                    if (winningDeck.IsPlayer)
-                    {
-                        intermediateResult.NumberOfPlayerWins ++;
-                    }
-                    else
-                    {
-                        intermediateResult.NumberOfPlayerLosses++;
-                    }
-
-                    return intermediateResult;
+                    return UpdateResult(intermediateResult, winningDeck);
                 }
 
                 // Enemy turn
@@ -57,15 +48,7 @@ namespace Optimizer.Optimizer
                 winningDeck = PlayerTurn(currentEnemyDeck, currentPlayerDeck);
                 if (winningDeck != null)
                 {
-                    if (winningDeck.IsPlayer)
-                    {
-                        intermediateResult.NumberOfPlayerWins++;
-                    }
-                    else
-                    {
-                        intermediateResult.NumberOfPlayerLosses++;
-                    }
-                    return intermediateResult;
+                    return UpdateResult(intermediateResult, winningDeck);                    
                 }
 
                 // Decrease delay
@@ -79,10 +62,28 @@ namespace Optimizer.Optimizer
             return intermediateResult;
         }
 
+        private SimulationResult UpdateResult(SimulationResult intermediateResult, Deck winningDeck)
+        {
+            if (winningDeck.IsPlayer)
+            {
+                intermediateResult.NumberOfPlayerWins ++;
+            }
+            else
+            {
+                intermediateResult.NumberOfPlayerLosses++;
+            }
+
+            return intermediateResult;
+        }
+
         private static Deck PlayerTurn(Deck currentPlayerDeck, Deck currentEnemyDeck)
         {
             // Draw new card
-            var newPlayerCard = DrawNewCard(currentPlayerDeck);
+            currentPlayerDeck.DrawNewCard();
+
+            // Commander turn
+            // Commander doesn't have Basic attack, however does skill attacks
+            // TODO: Commander turn
 
             // Play Deck
             foreach (var card in currentPlayerDeck.PlayedCards)
@@ -92,20 +93,18 @@ namespace Optimizer.Optimizer
                     if (card.CardType == CardType.Tower)
                     {
                         // No Basic attack, only skills
+                        // TODO: Tower attack
                     }
                     else
                     {
                         // Do Skill Attack first
-                        foreach (var skill   in card.Skills)
+                        foreach (var skill in card.Skills)
                         {
-                            if (skill.SkillType == SkillType.Siege)
-                            {
-                                SiegeAttack(currentPlayerDeck, currentEnemyDeck, card, skill);
-                            }
+                            skill.Attack(currentPlayerDeck, currentEnemyDeck, card);
                         }
 
                         // Play Basic Attack
-                        Deck deck = BasicAttack(currentPlayerDeck, currentEnemyDeck, card);
+                        Deck deck = card.BasicAttack(currentPlayerDeck, currentEnemyDeck);
 
                         // Check if there is winner
                         if (deck != null)
@@ -117,109 +116,11 @@ namespace Optimizer.Optimizer
 
             return null;
         }
+        
+        
 
-        private static void SiegeAttack(Deck currentPlayerDeck, Deck currentEnemyDeck, Card card, Skill currentSkill)
-        {
-            Logger.Log($"{currentPlayerDeck.GetDeckName()} Card {card.Name} : Siege attack ({currentSkill.Power})");
+       
 
-            if (currentSkill.CanAttack())
-            {                
-                var playedEnemyTowerCards = currentEnemyDeck.PlayedCards.Select(c => c).Where(c => c.CardType == CardType.Tower).ToList();
-
-                // Attack first tower card, if there are no Tower cards, skip
-                if (playedEnemyTowerCards.Count > 0)
-                {
-                    var towerCard = playedEnemyTowerCards[0];
-
-                    var originalCardHealth = towerCard.Health;
-                    towerCard.Health -= currentSkill.Power;
-
-                    Logger.Log(
-                        $"{currentEnemyDeck.GetDeckName()} card health: {towerCard.Health} ({originalCardHealth}-{currentSkill.Power})");
-
-                    // If enemy card health drop bellow 0, remove
-                    if (towerCard.Health <= 0)
-                    {
-                        Logger.Log($"{currentEnemyDeck.GetDeckName()} card {towerCard.Name} removed");
-                        currentEnemyDeck.PlayedCards.Remove(towerCard);
-                    }
-
-                    currentSkill.ResetCounter();
-                }
-                
-            }
-            else
-            {
-                currentSkill.RaiseCounter();
-            }
-
-
-
-        }
-
-        private static Card DrawNewCard(Deck currentPlayerDeck)
-        {
-            var newPlayerCard = currentPlayerDeck.Cards.Count > 0 ? currentPlayerDeck.Cards.Pop() : null;
-
-            if (newPlayerCard != null)
-            {
-                if (newPlayerCard.CardType == CardType.Assault)
-                {
-                    currentPlayerDeck.PlayedCards.Add(newPlayerCard);
-                }
-                else if (newPlayerCard.CardType == CardType.Tower)
-                {
-                    currentPlayerDeck.PlayedCards.Insert(0, newPlayerCard);
-                }
-
-                Logger.Log(
-                    $"{currentPlayerDeck.GetDeckName()} Card {newPlayerCard.Name} put on table (Delay: {newPlayerCard.Delay} )");
-            }
-            return newPlayerCard;
-        }
-
-        private static Deck BasicAttack(Deck currentPlayerDeck, Deck currentEnemyDeck, Card card)
-        {
-            Logger.Log($"{currentPlayerDeck.GetDeckName()} Card {card.Name} : Basic attack ({card.Attack})");
-
-            // Attack commander if no enemy cards on board
-            var playedAssaultCards = currentEnemyDeck.PlayedCards.Select(c=>c).Where(c => c.CardType == CardType.Assault).ToList();
-
-            if (playedAssaultCards.Count == 0)
-            {
-                var originalHealth = currentEnemyDeck.Commander.Health;
-                currentEnemyDeck.Commander.Health -= card.Attack;
-                Logger.Log(
-                    $"{currentEnemyDeck.GetDeckName()} Commander health: {currentEnemyDeck.Commander.Health} ({originalHealth}-{card.Attack})");
-
-
-                // If Commander health is bellow 0, game over
-                if (currentEnemyDeck.Commander.Health <= 0)
-                {
-                    Logger.Log($"{currentPlayerDeck.GetDeckName()} Win");
-                    {
-                        return currentPlayerDeck;                        
-                    }
-                }
-            }
-            else
-            {
-                Card enemyCard = currentEnemyDeck.PlayedCards.First(c=>c.CardType == CardType.Assault);
-
-                var originalCardHealth = enemyCard.Health;
-                enemyCard.Health -= card.Attack;
-
-                Logger.Log(
-                    $"{currentEnemyDeck.GetDeckName()} card health: {enemyCard.Health} ({originalCardHealth}-{card.Attack})");
-
-                // If enemy card health drop bellow 0, remove
-                if (enemyCard.Health <= 0)
-                {
-                    Logger.Log($"{currentEnemyDeck.GetDeckName()} card {enemyCard.Name} removed");
-                    currentEnemyDeck.PlayedCards.Remove(enemyCard);
-                }
-            }
-            return null;
-        }
+        
     }
 }

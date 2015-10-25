@@ -1,4 +1,6 @@
-﻿namespace Optimizer.Domain
+﻿using Optimizer.Utils;
+
+namespace Optimizer.Domain
 {
     public class Commander : Card
     {
@@ -7,5 +9,10 @@
             this.CardType = CardType.Commander;            
         }
 
+        public override Deck BasicAttack(Deck currentPlayerDeck, Deck currentEnemyDeck)
+        {
+            Logger.Log("No basic attack for commander.");
+            return null;
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using Optimizer.Domain;
+using Optimizer.Domain.Skills;
 using Optimizer.Utils;
 
 namespace Optimizer
@@ -39,7 +40,7 @@ namespace Optimizer
             enemyCards.Push(new Card(4, 20, 2) { Name = "Aegis" });
             enemyCards.Push(new Card(1, 17, 1) { Name = "Wham" });
             var towerAttackCard = new Card(1, 17, 1) {Name = "Wham Tower Attacker"};
-            towerAttackCard.Skills.Add(new Skill()
+            towerAttackCard.Skills.Add(new AttackSkill()
                 {
                     Power = 2,
                     Repeat = 0,

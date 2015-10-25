@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Optimizer.Utils;
 
 namespace Optimizer.Domain
 {
@@ -38,6 +39,41 @@ namespace Optimizer.Domain
 
             this.Commander.ResetToDefault();
             this.PlayedCards = new List<Card>();
+        }
+
+        public Card DrawNewCard()
+        {
+            var newPlayerCard = this.Cards.Count > 0 ? this.Cards.Pop() : null;
+
+            if (newPlayerCard != null)
+            {
+                if (newPlayerCard.CardType == CardType.Assault)
+                {
+                    this.PlayedCards.Add(newPlayerCard);
+                }
+                else if (newPlayerCard.CardType == CardType.Tower)
+                {
+                    this.PlayedCards.Insert(0, newPlayerCard);
+                }
+
+                Logger.Log(
+                    $"{this.GetDeckName()} Card {newPlayerCard.Name} put on table (Delay: {newPlayerCard.Delay} )");
+            }
+            return newPlayerCard;
+        }
+
+        /// <summary>
+        /// Check card health, if dead, remove from played cards collection
+        /// </summary>
+        /// <param name="cardToCheck"></param>
+        public void EvaluateCard(Card cardToCheck)
+        {
+            // If enemy skillOwnerCard health drop bellow 0, remove
+            if (cardToCheck.Health <= 0)
+            {
+                Logger.Log($"{this.GetDeckName()} card '{cardToCheck.Name}' removed");
+                this.PlayedCards?.Remove(cardToCheck);
+            }
         }
     }
 }
